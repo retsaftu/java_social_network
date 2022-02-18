@@ -30,7 +30,7 @@ export class LoginPageComponent implements OnInit {
     })).data;
     console.log(result);
     this.authService.setUser({ user: result });
-    this.router.navigate(['']);
+    this.router.navigate(['feed']);
 
 
 
