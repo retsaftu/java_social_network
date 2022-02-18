@@ -40,6 +40,16 @@ public class PostController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PostMapping("/posts")
+    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+        try {
+            Post _post = postRepository
+                    .save(new Post(post.getName(),post.getUsername(),post.getUserId(), post.getDescription(), post.getLike(), post.getVisible(), post.getComments()));
+            return new ResponseEntity<>(_post, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     //
 //    @GetMapping("/contests/{id}/tasks")
@@ -65,16 +75,7 @@ public class PostController {
     // }
     // }
     //
-//    @PostMapping("/contests")
-//    public ResponseEntity<Contest> createContest(@RequestBody Contest contest) {
-//        try {
-//            Contest _contest = contestRepository
-//                    .save(new Contest(contest.getName(), contest.getDescription(), contest.getTasks()));
-//            return new ResponseEntity<>(_contest, HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+
     //
     // @PutMapping("/contests/{id}")
     // public ResponseEntity<Contest> updateContest(@PathVariable("id") String id,

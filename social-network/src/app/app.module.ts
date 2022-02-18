@@ -54,15 +54,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FriendsComponent } from './friends/friends.component';
+import { DialogFromMenuExampleDialog } from './header/header.component';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     FeedComponent,
     HeaderComponent,
-    FriendsComponent
+    FriendsComponent,
+    DialogFromMenuExampleDialog
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -118,6 +123,6 @@ import { FriendsComponent } from './friends/friends.component';
     ScrollingModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, HeaderComponent]
 })
 export class AppModule { }

@@ -4,17 +4,19 @@ import lombok.Data;
 
 @Data
 public class Comment extends Object{
-    private String _id;
     private String name;
     private String content;
+    private String userId;
+    private String username;
 
     public Comment() {
 
     }
-    public Comment(String _id, String name, String content) {
-        this._id = _id;
+    public Comment( String name, String content,String userId,String username) {
         this.name = name;
         this.content = content;
+        this.userId = userId;
+        this.username = username;
     }
 
 }

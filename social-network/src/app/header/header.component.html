@@ -5,10 +5,9 @@
             <h1 class="logo_text">Dog funs</h1>
         </div>
         <div class="profile">
-            <button mat-menu-item [matMenuTriggerFor]="menu">Menu</button>
+            <button mat-button [matMenuTriggerFor]="menu" #menuTrigger>Menu</button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item>Item 1</button>
-                <button mat-menu-item>Item 2</button>
+                <button mat-menu-item (click)="openDialog()">Open dialog</button>
             </mat-menu>
             <img class="profile_img" src="../../assets/img_avatar.png" alt="">
         </div>
