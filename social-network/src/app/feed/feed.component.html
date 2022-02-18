@@ -86,6 +86,38 @@
                     </div>
 
                 </mat-card-actions>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Comments
+                        </mat-panel-title>
+                        <mat-panel-description>
+
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <mat-divider></mat-divider>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput [(ngModel)]="comment_user.content"></textarea>
+                    </mat-form-field>
+                    <button mat-button class="btn btn-default" (click)="submit(comment_user,post)">Отправить</button>
+
+                    <div class="profile_div">
+                        <mat-list>
+                            <div *ngFor="let comment of post.comments">
+                                <mat-list-item>
+                                    <div class="profile">
+                                        <p class="profile_text">{{comment.name}}</p>
+                                        <p class="profile_text">{{comment.content}}</p>
+                                    </div>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+                            </div>
+
+                        </mat-list>
+                    </div>
+                </mat-expansion-panel>
             </mat-card>
         </div>
     </div>

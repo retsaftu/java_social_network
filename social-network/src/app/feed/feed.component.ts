@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
+import { UserComment } from '../user';
 
 @Component({
   selector: 'app-feed',
@@ -9,15 +10,20 @@ import axios from 'axios';
 export class FeedComponent implements OnInit {
 
   posts: any;
+  comment_user: UserComment = new UserComment;
+  current_user: any;
   constructor() { }
 
   async ngOnInit() {
+    this.current_user = localStorage.getItem('userInfo');
+
     const result = (await axios({
       method: 'get',
       url: `http://localhost:3000/api/posts`,
     })).data;
     console.log(result);
     this.posts = result
+    console.log(this.current_user);
 
   }
   async onLike(newPost: any) {
@@ -61,6 +67,18 @@ export class FeedComponent implements OnInit {
       }
     }
     console.log(this.posts);
+
+
+  }
+  async submit(com: any, post: any) {
+    this.current_user
+    console.log(com);
+    const result = (await axios({
+      method: 'post',
+      url: `http://localhost:3000/api/posts/${post._id}`,
+      data: com
+    })).data;
+    // post.comment = [{}]
 
 
   }
