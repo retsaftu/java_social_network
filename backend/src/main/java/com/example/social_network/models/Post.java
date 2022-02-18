@@ -26,10 +26,13 @@ public class Post {
         this.description = description;
         this.like = like;
         this.visible = visible;
-        this.comments = new ArrayList<>();
+        this.comments = comments;
     }
 
     public boolean addComment(Comment comment) {
+        if (comments == null) {
+            comments = new ArrayList<>();
+        }
         return comments.add(comment);
     }
 

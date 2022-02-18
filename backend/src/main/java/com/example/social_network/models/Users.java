@@ -31,10 +31,13 @@ public class Users {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.friends= new ArrayList<>();
+        this.friends=friends;
     }
 
     public boolean addFriend(Friend friend) {
+        if (friends == null) {
+            friends = new ArrayList<>();
+        }
         return friends.add(friend);
     }
 }
