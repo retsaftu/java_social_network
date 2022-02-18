@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class FeedComponent implements OnInit {
 
   constructor() { }
+  items = Array.from({ length: 100000 }).map((_, i) => `Item #${i}`);
 
   ngOnInit(): void {
   }
