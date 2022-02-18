@@ -8,9 +8,12 @@ import axios from 'axios';
 })
 export class FriendsComponent implements OnInit {
   friends: any;
+  current_user: any;
+
   constructor() { }
 
   async ngOnInit() {
+    this.current_user = localStorage.getItem('userInfo');
     //http://localhost:3000/auth/users
     this.friends = (await axios({
       method: 'get',
@@ -19,6 +22,15 @@ export class FriendsComponent implements OnInit {
   }
   async add(friend: any) {
     console.log(friend);
+    let com: any;
+    com.name = this.current_user.name;
+    com.userId = this.current_user.userId;
+
+    const result = (await axios({
+      method: 'post',
+      url: `http://localhost:3000/friend/${friend._id}`,
+      data: com
+    })).data;
 
   }
   async delete(friend: any) {
