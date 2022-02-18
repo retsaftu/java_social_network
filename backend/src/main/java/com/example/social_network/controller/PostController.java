@@ -1,7 +1,9 @@
 package com.example.social_network.controller;
 
+import com.example.social_network.models.Comment;
 import com.example.social_network.models.Post;
 import com.example.social_network.repository.PostRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +53,23 @@ public class PostController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/posts/{postId}")
+    public ResponseEntity<Post> createComment(@PathVariable("postId") String postId, @RequestBody Comment comment) {
+        try {
+            System.out.println(comment.getContent());
+            Post post = postRepository.findById(postId).orElse(null);
+            if (post != null) {
+                post.addComment(comment);
+                postRepository.save(post);
+            }
+            return new ResponseEntity<>(post, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
     //
 //    @GetMapping("/contests/{id}/tasks")

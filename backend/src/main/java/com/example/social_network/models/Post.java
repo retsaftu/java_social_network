@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+
 @Data
 @Document(collection = "posts")
 public class Post {
@@ -15,9 +17,9 @@ public class Post {
     private String description;
     private Number like;
     private String visible;
-    private Comment[] comments;
+    private ArrayList<Comment> comments;
 
-    public Post(String name, String username, String userId, String description, Number like, String visible, Comment[] comments) {
+    public Post(String name, String username, String userId, String description, Number like, String visible, ArrayList<Comment> comments) {
         this.name = name;
         this.username = username;
         this.userId = userId;
@@ -25,6 +27,10 @@ public class Post {
         this.like = like;
         this.visible = visible;
         this.comments = comments;
+    }
+
+    public boolean addComment(Comment comment) {
+        return comments.add(comment);
     }
 
 
