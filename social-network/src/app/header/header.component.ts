@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { Post } from '../post';
+import axios from 'axios';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -27,14 +30,27 @@ export class HeaderComponent implements OnInit {
 @Component({
   selector: 'dialog-from-menu-dialog',
   templateUrl: 'dialog-from-menu-example-dialog.html',
+  styleUrls: ['./header.component.css']
 })
 export class DialogFromMenuExampleDialog {
-  user: any;
+  post: Post = new Post;
+  // model: any = 'asdf';
   ngOnInit(): void {
   }
 
-  submit(user: any) {
-    console.log(user);
+  async submit(post: any) {
+    console.log(post);
+    // post.comment = [{}]
+    post.like = 0
+    post.userId = ''
+    post.username = ''
+
+    const result = (await axios({
+      method: 'post',
+      url: `http://localhost:3000/api/posts`,
+      data: post
+    })).data;
+
 
   }
 }
