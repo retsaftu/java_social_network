@@ -34,6 +34,7 @@ public class Post {
     }
 
 
+
 //    public Post(String name, String username, String email, String password) {
 //        this.name = name;
 //        this.username = username;
