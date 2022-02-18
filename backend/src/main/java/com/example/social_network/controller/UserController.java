@@ -47,18 +47,18 @@ public class UserController {
 
         try {
             System.out.println("register");
-             Users check = mongoOperations.findOne(
-                    Query.query(Criteria.where("email").is(user.getEmail())),
-                    Users.class,
-                    "users"
-            );
-            System.out.println(check.getEmail());
-            System.out.println(user.getEmail());
-
-            if (check.getEmail().equals(user.getEmail())) {
-                check=null;
-                return new ResponseEntity<>(check,HttpStatus.BAD_REQUEST);
-            }
+//             Users check = mongoOperations.findOne(
+//                    Query.query(Criteria.where("email").is(user.getEmail())),
+//                    Users.class,
+//                    "users"
+//            );
+//            System.out.println(check.getEmail());
+//            System.out.println(user.getEmail());
+//
+//            if (check.getEmail().equals(user.getEmail())) {
+//                check=null;
+//                return new ResponseEntity<>(check,HttpStatus.BAD_REQUEST);
+//            }
             user.setPassword(Token.getToken(user.getPassword()));
             Users _user = userRepository.save(new Users(user.getName(), user.getUsername(),user.getEmail(),user.getPassword()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
