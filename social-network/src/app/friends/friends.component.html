@@ -13,32 +13,15 @@
     </div>
     <div class="friends">
         <div class="profile_div">
-            <div class="profile">
-                <img class="profile_img" src="../../assets/img_avatar.png" alt="">
-                <p class="profile_text">Timur</p>
-                <button mat-flat-button color="primary">add+</button>
-                <button mat-flat-button color="warn">delete</button>
+            <div *ngFor="let friend of friends">
+                <div class="profile">
+                    <img class="profile_img" src="../../assets/img_avatar.png" alt="">
+                    <p class="profile_text">{{friend.name}}</p>
+                    <button mat-flat-button color="primary" (click)="add(friend)">add+</button>
+                    <button mat-flat-button color="warn" (click)="delete(friend)">delete</button>
+                </div>
+                <mat-divider></mat-divider>
             </div>
-            <mat-divider></mat-divider>
-            <div class="profile">
-                <img class="profile_img" src="../../assets/img_avatar.png" alt="">
-                <p class="profile_text">Timur</p>
-                <button mat-flat-button color="primary">add+</button>
-                <button mat-flat-button color="warn">delete</button>
-            </div>
-            <mat-divider></mat-divider>
-            <div class="profile">
-                <img class="profile_img" src="../../assets/img_avatar.png" alt="">
-                <p class="profile_text">Timur</p>
-                <button mat-flat-button color="primary">add+</button>
-                <button mat-flat-button color="warn">delete</button>
-            </div>
-            <mat-divider></mat-divider>
-
-
         </div>
-
-
     </div>
-
 </div>
