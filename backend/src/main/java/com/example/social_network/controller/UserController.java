@@ -1,6 +1,7 @@
 package com.example.social_network.controller;
 
 import com.example.social_network.helpers.Token;
+import com.example.social_network.models.Friend;
 import com.example.social_network.models.Users;
 import com.example.social_network.repository.UserRepository;
 import com.mongodb.client.MongoClients;
@@ -60,7 +61,7 @@ public class UserController {
 //                return new ResponseEntity<>(check,HttpStatus.BAD_REQUEST);
 //            }
             user.setPassword(Token.getToken(user.getPassword()));
-            Users _user = userRepository.save(new Users(user.getName(), user.getUsername(),user.getEmail(),user.getPassword()));
+            Users _user = userRepository.save(new Users(user.getName(), user.getUsername(),user.getEmail(),user.getPassword(), user.getFriends()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

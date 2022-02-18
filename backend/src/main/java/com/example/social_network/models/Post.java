@@ -26,7 +26,7 @@ public class Post {
         this.description = description;
         this.like = like;
         this.visible = visible;
-        this.comments = comments;
+        this.comments = new ArrayList<>();
     }
 
     public boolean addComment(Comment comment) {
