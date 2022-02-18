@@ -71,8 +71,19 @@ export class FeedComponent implements OnInit {
 
   }
   async submit(com: any, post: any) {
-    this.current_user
+    // this.current_user
     console.log(com);
+    this.posts
+
+    // this.posts.push(com);
+    com.name = this.current_user.name;
+    com.userId = this.current_user.userId;
+    for (let i = 0; i < this.posts.length; i++) {
+      if (this.posts[i]._id == post._id) {
+        console.log('==========');
+        this.posts[i].comments.push(com)
+      }
+    }
     const result = (await axios({
       method: 'post',
       url: `http://localhost:3000/api/posts/${post._id}`,
