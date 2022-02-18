@@ -56,6 +56,10 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { FriendsComponent } from './friends/friends.component';
 import { DialogFromMenuExampleDialog } from './header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Page404Component } from './page404/page404.component';
+import { AuthPageComponent } from './auth-page/auth-page.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
 
 
 @NgModule({
@@ -64,7 +68,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FeedComponent,
     HeaderComponent,
     FriendsComponent,
-    DialogFromMenuExampleDialog
+    DialogFromMenuExampleDialog,
+    Page404Component,
+    AuthPageComponent,
+    LoginPageComponent,
+    RegisterPageComponent
   ],
   imports: [
     FormsModule,
