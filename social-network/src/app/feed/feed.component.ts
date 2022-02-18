@@ -15,7 +15,9 @@ export class FeedComponent implements OnInit {
   constructor() { }
 
   async ngOnInit() {
-    this.current_user = localStorage.getItem('userInfo');
+    this.current_user = JSON.parse(localStorage.getItem("userInfo") || '{}').user;
+
+    // this.current_user = localStorage.getItem('userInfo');
 
     const result = (await axios({
       method: 'get',
@@ -77,7 +79,7 @@ export class FeedComponent implements OnInit {
 
     // this.posts.push(com);
     com.name = this.current_user.name;
-    com.userId = this.current_user.userId;
+    com.userId = this.current_user._id;
     for (let i = 0; i < this.posts.length; i++) {
       if (this.posts[i]._id == post._id) {
         console.log('==========');
