@@ -25,7 +25,7 @@ public class FriendController {
             if (user1 != null && user2 != null) {
                 user1.addFriend(friend);
                 userRepository.save(user1);
-                Friend friend1 = new Friend(user1.getName(), user1.get_id());
+                Friend friend1 = new Friend(user1.getName(), user1.get_id(),"pending");
                 user2.addFriend(friend1);
                 userRepository.save(user2);
             }

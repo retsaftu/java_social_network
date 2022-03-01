@@ -60,6 +60,8 @@ import { Page404Component } from './page404/page404.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
+import { FriendRequestsComponent } from './friend-requests/friend-requests.component';
+import { FriendAddComponent } from './friend-add/friend-add.component';
 
 
 @NgModule({
@@ -72,7 +74,9 @@ import { RegisterPageComponent } from './register-page/register-page.component';
     Page404Component,
     AuthPageComponent,
     LoginPageComponent,
-    RegisterPageComponent
+    RegisterPageComponent,
+    FriendRequestsComponent,
+    FriendAddComponent
   ],
   imports: [
     FormsModule,
