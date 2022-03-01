@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
 
 @Component({
-  selector: 'app-friends',
-  templateUrl: './friends.component.html',
-  styleUrls: ['./friends.component.css']
+  selector: 'app-friend-requests',
+  templateUrl: './friend-requests.component.html',
+  styleUrls: ['./friend-requests.component.css']
 })
-export class FriendsComponent implements OnInit {
+export class FriendRequestsComponent implements OnInit {
+
   friends: any;
   current_user: any;
 
@@ -16,16 +17,10 @@ export class FriendsComponent implements OnInit {
     // let userInfo = localStorage.getItem("userInfo");
     this.current_user = JSON.parse(localStorage.getItem("userInfo") || '{}').user;
     //http://localhost:3000/auth/users
-    console.log(this.current_user._id);
-    console.log(`http://localhost:3000/auth/users/${(this.current_user._id)}`);
-
-
     this.friends = (await axios({
       method: 'get',
-      url: `http://localhost:3000/auth/users/${(this.current_user._id)}`,
-    })).data.friends;
-    console.log(this.friends);
-
+      url: `http://localhost:3000/auth/users`,
+    })).data;
   }
   async add(friend: any) {
     console.log("current_user", this.current_user);
