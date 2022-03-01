@@ -72,7 +72,8 @@ public class UserController {
 //            return new ResponseEntity<>(HttpStatus.OK);
             if (userData.isPresent()) {
                 Users _user = userData.get();
-//                public ArrayList<Friend>=_user.getFriends();
+
+                ArrayList<Friend> arr_friend =_user.getFriends();
                 for (Friend friendsss:_user.getFriends()) {
 //                    System.out.println(friendsss);
 //                    System.out.println(friendsss.setStatus("notFriend"));
@@ -82,6 +83,20 @@ public class UserController {
                         System.out.println(friendsss.getUserId());
                         System.out.println(friendId);
                         System.out.println(friendsss.getUserId()==friendId);
+                        ArrayList<Friend> arr_friend_arr;
+                        for (int i=0;i<arr_friend.size();i++){
+                            if (arr_friend.get(i).getUserId().equals(friendId)){
+                                arr_friend.get(i).setStatus("notFriend");
+                            }
+                        }
+                        System.out.println(arr_friend);
+                        _user.setFriends(arr_friend);
+//                        _user.setFriends;
+//                        for (Friend templ_arr:arr_friend) {
+//                            if (templ_arr.getUserId().equals(friendId)){
+//
+//                            }
+//                        }
                     }
                 }
 //                for (int i=0;i<_user.getFriends().size();i++){
