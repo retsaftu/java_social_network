@@ -43,9 +43,14 @@ export class FriendAddComponent implements OnInit {
       method: 'get',
       url: `http://localhost:3000/auth/users`,
     })).data;
-    arr.forEach((part, index) => {
-      this.friends_all[index].status = 'notFriend'
+    console.log('arr', arr);
 
+    arr.forEach((part, index) => {
+      console.log('arr');
+
+      this.friends_all[index].status = 'notFriend'
+      console.log('this.current_user', this.current_user);
+      if (friends_list_arr)
       friends_list_arr.forEach((friends_list_arr_part, friends_list_arr_index) => {
         // console.log('index', index);
         // console.log('part', part);

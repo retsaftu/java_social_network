@@ -50,6 +50,7 @@ public class UserController {
     public ResponseEntity < Users > getUsersById(@PathVariable String userId,@RequestParam(required = false) String title) {
         try {
             List < Users > users = new ArrayList<Users>();
+            System.out.println(userId);
 
             Users user = userRepository.findById(userId).orElse(null);
             System.out.println(users);

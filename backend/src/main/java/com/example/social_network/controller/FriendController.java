@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/friend")
 public class FriendController {
@@ -19,9 +22,45 @@ public class FriendController {
     @PostMapping("/{userId}")
     public ResponseEntity<Users> addFriend(@PathVariable String userId, @RequestBody Friend friend) {
         try {
-            System.out.println(friend.getName());
             Users user1 = userRepository.findById(userId).orElse(null);
             Users user2 = userRepository.findById(friend.getUserId()).orElse(null);
+            Optional< Users > userData = userRepository.findById(userId);
+            boolean check=false;
+            if (userData.isPresent()) {
+                Users _user = userData.get();
+
+                ArrayList<Friend> arr_friend =_user.getFriends();
+                for (Friend friendsss:_user.getFriends()) {
+//                    System.out.println(friendsss);
+//                    System.out.println(friendsss.setStatus("notFriend"));
+
+                    if (friendsss.getUserId().equals(user2)){
+                        System.out.println("RABOTAET");
+                        System.out.println(friendsss.getUserId());
+                        System.out.println(user2);
+                        ArrayList<Friend> arr_friend_arr;
+                        for (int i=0;i<arr_friend.size();i++){
+                            if (arr_friend.get(i).getUserId().equals(user2)){
+                                arr_friend.get(i).setStatus("pending");
+                                check=true;
+                            }
+                        }
+                        System.out.println(arr_friend);
+                        _user.setFriends(arr_friend);
+//                        _user.setFriends;
+//                        for (Friend templ_arr:arr_friend) {
+//                            if (templ_arr.getUserId().equals(friendId)){
+//
+//                            }
+//                        }
+                    }
+                }
+                if (check)
+                return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+
+            }
+            System.out.println(friend.getName());
+
             if (user1 != null && user2 != null) {
                 user1.addFriend(friend);
                 userRepository.save(user1);
