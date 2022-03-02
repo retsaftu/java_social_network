@@ -15,6 +15,7 @@ export class RegisterPageComponent implements OnInit {
   ngOnInit(): void {
   }
   async submit(user: any) {
+    user.friends = [];
     console.log(user);
     // post.comment = [{}]
     // post.like = 0

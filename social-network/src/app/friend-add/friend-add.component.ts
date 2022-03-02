@@ -47,33 +47,33 @@ export class FriendAddComponent implements OnInit {
 
     arr.forEach((part, index) => {
       console.log('arr');
-
+      // if (part._id == this.current_user._id)
       this.friends_all[index].status = 'notFriend'
       console.log('this.current_user', this.current_user);
       if (friends_list_arr)
-      friends_list_arr.forEach((friends_list_arr_part, friends_list_arr_index) => {
-        // console.log('index', index);
-        // console.log('part', part);
-        // console.log('type', typeof (arr[index]));
-        // console.log(friends_list_arr_part.status);
-        // console.log(friends_list_arr_part.);
-        // this.friends_all[index].status = 'notFriend'
-        if (friends_list_arr_part.status == 'pending') {
-          if (part._id == friends_list_arr_part.userId) {
-            console.log('pending');
-            this.friends_all[index].status = 'pending'
+        friends_list_arr.forEach((friends_list_arr_part, friends_list_arr_index) => {
+          // console.log('index', index);
+          // console.log('part', part);
+          // console.log('type', typeof (arr[index]));
+          // console.log(friends_list_arr_part.status);
+          // console.log(friends_list_arr_part.);
+          // this.friends_all[index].status = 'notFriend'
+          if (friends_list_arr_part.status == 'pending') {
+            if (part._id == friends_list_arr_part.userId) {
+              console.log('pending');
+              this.friends_all[index].status = 'pending'
 
-          }
-        } else if (friends_list_arr_part.status == 'friend') {
-          if (part._id == friends_list_arr_part.userId) {
-            console.log('friend');
-            this.friends_all[index].status = 'friend'
+            }
+          } else if (friends_list_arr_part.status == 'friend') {
+            if (part._id == friends_list_arr_part.userId) {
+              console.log('friend');
+              this.friends_all[index].status = 'friend'
 
+            }
           }
-        }
-        // this.friends_all[index].status = 'asdf'
-        // this[index] = "hello world";
-      }, friends_list_arr);
+          // this.friends_all[index].status = 'asdf'
+          // this[index] = "hello world";
+        }, friends_list_arr);
       // console.log('index', index);
       // console.log('part', part);
       // console.log('type', typeof (arr[index]));
@@ -100,7 +100,7 @@ export class FriendAddComponent implements OnInit {
     const result = (await axios({
       method: 'post',
       url: `http://localhost:3000/friend/${friend._id}`,
-      data: { name: this.current_user.name, userId: this.current_user._id }
+      data: { name: this.current_user.name, userId: this.current_user._id, status: "pending" }
     })).data;
     this.friends.forEach((part: any, index: any) => {
       console.log(this.friends[index]);
