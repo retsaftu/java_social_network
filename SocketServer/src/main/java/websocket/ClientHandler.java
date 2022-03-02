@@ -1,6 +1,5 @@
 package websocket;
 
-import org.json.JSONObject;
 import com.google.gson.Gson;
 import database.MongoDB;
 import models.Post;
@@ -9,6 +8,7 @@ import models.User;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,8 +21,8 @@ public class ClientHandler extends Thread {
     private MongoDB database;
     private MyLogger<ClientHandler> myLogger;
     private Gson gson;
-//    private List<Post> oldPosts;
-//    private List<Post> newPosts;
+    private List<Post> oldPosts;
+    private List<Post> currentPosts;
 
     public ClientHandler(Socket socket, int id) {
         myLogger = new MyLogger<>(ClientHandler.class);
@@ -31,6 +31,8 @@ public class ClientHandler extends Thread {
         database = new MongoDB();
         client = null;
         clientId = id;
+        oldPosts = null;
+        currentPosts = null;
     }
 
     @Override
@@ -40,11 +42,11 @@ public class ClientHandler extends Thread {
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String action;
             while (!isAuthorized()) {
-                sendMessage("Incorrect username or password! Please try again");
+//                sendMessage("Incorrect username or password! Please try again");
             }
 
-//            UpdateTimer updateTimer = new UpdateTimer();
-//            updateTimer.start();
+            UpdateTimer updateTimer = new UpdateTimer();
+            updateTimer.start();
 
             do {
                 sendMessage("Options: /post, /update, /exit");
@@ -52,8 +54,17 @@ public class ClientHandler extends Thread {
                 if (action != null) {
                     switch (action) {
                         case "/post" -> createPost();
-                        case "/update" -> getNewPosts();
-                        case "/exit" -> sendMessage("Exit the server...");
+                        case "/update" -> getPosts();
+                        case "/exit" -> {
+                            myLogger.myLog("""
+                                    User logged out!
+                                    Username: %s
+                                    Password: %s
+                                    """.formatted(client.getUsername(), client.getPassword()
+                            ), "INFO");
+                            client = null;
+                            sendMessage("Exit the server...");
+                        }
                         default -> sendMessage("Incorrect action, please try again!");
                     }
                 }
@@ -64,14 +75,13 @@ public class ClientHandler extends Thread {
     }
 
     private void createPost() throws IOException {
-        myLogger.myLog("Post created", "INFO");
         Post post = new Post();
         post.setLike(0);
         post.setUsername(client.getUsername());
         post.setUserId(client.get_id());
         post.setComments(new ArrayList<>());
 
-        sendMessage("Enter post heading: ");
+        sendMessage("Enter post title: ");
         post.setName(getMessage());
 
         sendMessage("Enter post description: ");
@@ -87,16 +97,81 @@ public class ClientHandler extends Thread {
         }
 
         database.createPost(post);
+
+        myLogger.myLog("""
+                Successfully create new post!
+                Title: %s
+                Description: %s
+                Author: %s
+                Visibility: %s
+                """.formatted(
+                post.getName(),
+                post.getDescription(),
+                post.getUsername(),
+                post.getVisible()
+        ), "INFO");
     }
 
-    private void getNewPosts() {
+    private void getPosts() throws IOException {
         List<Post> posts = database.getAllPosts();
         String postsJson = gson.toJson(posts);
-        System.out.println(new JSONObject(posts).toString(4));
         sendMessage(postsJson);
+        myLogger.myLog("""
+                Successfully retrieved posts!
+                %s
+                """.formatted(
+                postsJson
+        ), "INFO");
     }
 
-    private boolean isAuthorized() {
+    private void getNewPosts() throws IOException {
+        oldPosts = currentPosts;
+        currentPosts = database.getAllPosts();
+
+        if (currentPosts == null) {
+            sendMessage("No posts found!");
+            myLogger.myLog("No posts in the database found!", "INFO");
+            return;
+        }
+
+        if (oldPosts == null) {
+            String postsJson = gson.toJson(currentPosts);
+            sendMessage(postsJson);
+            myLogger.myLog("User %s got %s new posts!\n%s".formatted(
+                    client.getUsername(),
+                    String.valueOf(currentPosts.size()),
+                    postsJson
+            ), "INFO");
+            return;
+        }
+
+        HashMap<String, Post> postById = new HashMap<>();
+        List<Post> newPosts = new ArrayList<>();
+
+        for (Post p : oldPosts) {
+            postById.put(p.get_id(), p);
+        }
+
+        for (Post p : currentPosts) {
+            if (postById.get(p.get_id()) == null) {
+                newPosts.add(postById.get(p.get_id()));
+            }
+        }
+
+        if (newPosts.isEmpty()) {
+            sendMessage("Your posts are up to date!");
+        } else {
+            String postsJson = gson.toJson(newPosts);
+            sendMessage(postsJson);
+            myLogger.myLog("User %s got %s new posts!\n%s".formatted(
+                    client.getUsername(),
+                    String.valueOf(newPosts.size()),
+                    postsJson
+            ), "INFO");
+        }
+    }
+
+    private boolean isAuthorized() throws IOException {
         sendMessage("Enter your username: ");
         String username = getMessage();
 
@@ -105,7 +180,24 @@ public class ClientHandler extends Thread {
 
         client = database.loginUser(username, password);
 
-        return client != null;
+        if (client != null) {
+            myLogger.myLog("""
+                    Successfully logged in!
+                    Username: %s
+                    Password: %s
+                    """.formatted(
+                    client.getUsername(),
+                    client.getPassword()
+            ), "INFO");
+            return true;
+        } else {
+            myLogger.myLog("""
+                    Failed to login!
+                    Username: %s
+                    Password: %s
+                    """.formatted(username, password), "ERROR");
+            return false;
+        }
     }
 
     private String getMessage() {
@@ -126,19 +218,19 @@ public class ClientHandler extends Thread {
         System.out.println("Server -> Client#" + this.clientId + ": " + message);
     }
 
-//    private class UpdateTimer extends Thread {
-//
-//        @Override
-//        public void run() {
-//            while (true) {
-//                try {
-//                    int secondsInterval = 5;
-//                    getNewPosts();
-//                    Thread.sleep(1000 * secondsInterval);
-//                } catch (InterruptedException | IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
+    private class UpdateTimer extends Thread {
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    int secondsInterval = 5;
+                    getNewPosts();
+                    Thread.sleep(1000 * secondsInterval);
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

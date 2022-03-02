@@ -18,6 +18,8 @@ public class SocketClient {
             writer = new PrintWriter(clientSocket.getOutputStream(), true);
             reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             Scanner scanner = new Scanner(System.in);
+//            ServerNotifications serverNotifications = new ServerNotifications();
+//            serverNotifications.start();
             while (true) {
                 String message = getMessage();
                 if (message.equals("Exit the server...")) {
@@ -26,10 +28,10 @@ public class SocketClient {
                     System.out.println("Server -> This client: ");
                     System.out.println(new JSONArray(message).toString(4));
                     System.out.println("New posts were successfully retrieved! Press Enter to continue...\n");
-                    sendMessage("");
                 } else {
                     System.out.println("Server -> This client: " + message);
                 }
+
                 String input = scanner.nextLine();
                 sendMessage(input);
             }
@@ -63,20 +65,8 @@ public class SocketClient {
     public String getMessage() {
         String message = "Exit the server...";
         try {
-//            while ((message = reader.readLine()) != null) {
-//                System.out.println("SERVER<<" + message);
-//            }
             message = reader.readLine();
             return message;
-
-//            if (isJSONValid(message)) {
-//                System.out.println("Server -> This client: ");
-//                System.out.println(new JSONArray(message).toString(4));
-//                System.out.println("New posts were successfully retrieved! Press Enter to continue...\n");
-//                sendMessage("");
-//            } else {
-//                System.out.println("Server -> This client: " + message);
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,4 +82,35 @@ public class SocketClient {
             e.printStackTrace();
         }
     }
+
+//    private void getNotifications() {
+//        try {
+//            String message = reader.readLine();
+//            if (message != null && isJSONValid(message)) {
+//                System.out.println("Server -> This client: ");
+//                System.out.println(new JSONArray(message).toString(4));
+//                System.out.println("New posts were successfully retrieved! Press Enter to continue...\n");
+//            } else {
+//                System.out.println("Server -> This client: " + message);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+//    private class ServerNotifications extends Thread {
+//
+//        @Override
+//        public void run() {
+//            while (true) {
+//                try {
+//                    int secondsInterval = 1;
+//                    getNotifications();
+//                    Thread.sleep(1000 * secondsInterval);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 }
