@@ -22,7 +22,7 @@ body {
 }
 
 .main-wrapper {
-	height: 100%;
+	height: 40vh;
 }
 
 .positronx {
@@ -44,6 +44,8 @@ body {
 	-ms-transform: scale(1);
 	z-index: 5;
 	max-width: 330px;
+	height: 100%;
+
 }
 
 .box.back {
