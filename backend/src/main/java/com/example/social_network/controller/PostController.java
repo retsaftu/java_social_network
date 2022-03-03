@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class PostController {
 
     // @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPost(@RequestParam(required = false) String title) {
+    public ResponseEntity<List<Post>> getAllPost(@RequestParam(required = false) String title) throws IOException {
         try {
             List<Post> posts = new ArrayList<Post>();
 
@@ -35,33 +36,33 @@ public class PostController {
             // else
             // contestRepository.findByTitleContaining(title).forEach(contests::add);
             System.out.println(posts);
-            myLogger.myLog(PostController, "INFO");
+//            myLogger.myLog(PostController.toString(), "INFO");
             if (posts.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(posts, HttpStatus.OK);
         } catch (Exception e) {
-            myLogger.myLog(e, "ERROR");
+            myLogger.myLog(e.toString(), "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+    public ResponseEntity<Post> createPost(@RequestBody Post post) throws IOException {
         try {
             Post _post = postRepository
                     .save(new Post(post.getName(), post.getUsername(), post.getUserId(), post.getDescription(),
                             post.getLike(), post.getVisible(), post.getComments()));
             return new ResponseEntity<>(_post, HttpStatus.CREATED);
         } catch (Exception e) {
-            myLogger.myLog(e, "ERROR");
+            myLogger.myLog(e.toString(), "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/posts/{postId}")
-    public ResponseEntity<Post> createComment(@PathVariable("postId") String postId, @RequestBody Comment comment) {
+    public ResponseEntity<Post> createComment(@PathVariable("postId") String postId, @RequestBody Comment comment) throws IOException {
         try {
             System.out.println(comment.getContent());
             Post post = postRepository.findById(postId).orElse(null);
@@ -71,7 +72,7 @@ public class PostController {
             }
             return new ResponseEntity<>(post, HttpStatus.OK);
         } catch (Exception e) {
-            myLogger.myLog(e, "ERROR");
+            myLogger.myLog(e.toString(), "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

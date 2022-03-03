@@ -11,6 +11,7 @@ import axios from 'axios';
 })
 export class HeaderComponent implements OnInit {
 
+
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
 
   constructor(public dialog: MatDialog) { }
@@ -24,6 +25,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
 }
@@ -34,16 +36,21 @@ export class HeaderComponent implements OnInit {
 })
 export class DialogFromMenuExampleDialog {
   post: Post = new Post;
+  current_user: any;
+
   // model: any = 'asdf';
   ngOnInit(): void {
+    this.current_user = JSON.parse(localStorage.getItem("userInfo") || '{}').user;
+
   }
 
   async submit(post: any) {
     console.log(post);
     // post.comment = [{}]
     post.like = 0
-    post.userId = ''
-    post.username = ''
+    post.userId = this.current_user._id
+    post.username = this.current_user.name
+    post.comments = [];
 
     const result = (await axios({
       method: 'post',

@@ -4,7 +4,7 @@ export class Post {
         public description?: string,
         public visible?: string,
         public like?: number,
-        public comment?: [],
+        public comments?: [],
         public userId?: string,
         public username?: string,
         ) { }

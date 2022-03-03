@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.io.IOException;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +32,13 @@ public class UserController {
     MongoOperations mongoOperations = new MongoTemplate(MongoClients.create(), "social_network");
 
     @GetMapping("/users")
-    public ResponseEntity<List<Users>> getUsers(@RequestParam(required = false) String title) {
+    public ResponseEntity<List<Users>> getUsers(@RequestParam(required = false) String title) throws IOException {
         try {
             List<Users> users = new ArrayList<Users>();
 
             userRepository.findAll().forEach(users::add);
             System.out.println(users);
-            myLogger.myLog(users, "INFO");
+            myLogger.myLog(users.toString(), "INFO");
 
             if (users.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -45,14 +46,14 @@ public class UserController {
 
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
-            myLogger.myLog(e, "ERROR");
+            myLogger.myLog(e.toString(), "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<Users> getUsersById(@PathVariable String userId,
-            @RequestParam(required = false) String title) {
+            @RequestParam(required = false) String title) throws IOException {
         try {
             List<Users> users = new ArrayList<Users>();
             System.out.println(userId);
@@ -67,14 +68,14 @@ public class UserController {
 
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
-            myLogger.myLog(e, "ERROR");
+            myLogger.myLog(e.toString(), "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/users/{userId}/{friendId}")
     public ResponseEntity<Users> cancelFriend(@PathVariable String userId, @PathVariable String friendId,
-            @RequestParam(required = false) String title) {
+            @RequestParam(required = false) String title) throws IOException {
         try {
             Optional<Users> userData = userRepository.findById(userId);
             Optional<Users> friendData = userRepository.findById(friendId);
@@ -122,7 +123,7 @@ public class UserController {
                                         }
                                     }
                                     System.out.println(arr_friend_friend);
-                                    myLogger.myLog(arr_friend_friend, "INFO");
+                                    myLogger.myLog(arr_friend_friend.toString(), "INFO");
 
                                     _friend.setFriends(arr_friend_friend);
                                     userRepository.save(_friend);
@@ -166,13 +167,13 @@ public class UserController {
             //
             // return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
-            myLogger.myLog(e, "ERROR");
+            myLogger.myLog(e.toString(), "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Users> createUser(@RequestBody Users user) {
+    public ResponseEntity<Users> createUser(@RequestBody Users user) throws IOException {
 
         try {
             System.out.println("register");
@@ -193,13 +194,13 @@ public class UserController {
                     user.getPassword(), user.getFriends()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
-            myLogger.myLog(e, "ERROR");
+            myLogger.myLog(e.toString(), "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Users> login(@RequestBody Users user) {
+    public ResponseEntity<Users> login(@RequestBody Users user) throws IOException {
 
         try {
             // MongoOperations mongoOperations = new MongoTemplate(MongoClients.create(),
@@ -211,11 +212,11 @@ public class UserController {
                     "users");
             System.out.println("=====================");
             System.out.println(_users);
-            myLogger.myLog(_users, "INFO");
+            myLogger.myLog(_users.toString(), "INFO");
 
             return new ResponseEntity<>(_users, HttpStatus.CREATED);
         } catch (Exception e) {
-            myLogger.myLog(e, "ERROR");
+            myLogger.myLog(e.toString(), "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

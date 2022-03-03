@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +27,7 @@ public class FriendController {
             List<Users> users = new ArrayList<Users>();
 
             List<Users> usersRequest = new ArrayList<Users>();
-            myLogger.myLog(usersRequest, "INFO");
+            myLogger.myLog(usersRequest.toString(), "INFO");
 
             userRepository.findAll().forEach(users::add);
             for (Users eachUser : users) {
@@ -55,12 +54,12 @@ public class FriendController {
             System.out.println("+++++++++++++++++++");
             System.out.println(friend);
             System.out.println("+++++++++++++++++++");
-            // Users user1 = userRepository.findById(userId).orElse(null);
+             Users user1 = userRepository.findById(userId).orElse(null);
             // Users user2 = userRepository.findById(friend.getUserId()).orElse(null);
             Optional<Users> userData = userRepository.findById(userId);
             Optional<Users> friendData = userRepository.findById(friend.getUserId());
-            myLogger.myLog(userData, "INFO");
-            myLogger.myLog(friendData, "INFO");
+            myLogger.myLog(userData.toString(), "INFO");
+            myLogger.myLog(friendData.toString(), "INFO");
 
             if (userData.isPresent() && friendData.isPresent()) {
                 Users _user = userData.get();
@@ -70,13 +69,15 @@ public class FriendController {
                 ArrayList<Friend> arr_friend_friend = _friend.getFriends();
                 System.out.println("arr_friend");
                 System.out.println(arr_friend);
-                myLogger.myLog(arr_friend, "INFO");
-                myLogger.myLog(arr_friend_friend, "INFO");
+                myLogger.myLog(arr_friend.toString(), "INFO");
+                myLogger.myLog(arr_friend_friend.toString(), "INFO");
 
                 System.out.println("arr_friend_friend");
 
                 System.out.println(arr_friend_friend);
                 for (Friend friendsss : _user.getFriends()) {
+                    System.out.println("friendsss");
+                    System.out.println(friendsss);
                     if (friendsss.getUserId().equals(friend.getUserId())) {
                         System.out.println("RABOTAET");
                         System.out.println(friendsss.getUserId());
@@ -84,12 +85,13 @@ public class FriendController {
 
                         // Syste.out.println(friendId);
                         // System.out.println(friendsss.getUserId() == friendId);
-                        for (int i = 0; i < arr_friend.size(); i++) {
+                        for (int i = 0; i <= arr_friend.size(); i++) {
                             if (arr_friend.get(i).getUserId().equals(friend.getUserId())) {
                                 arr_friend.get(i).setStatus("friend");
                                 System.out.println("111111111111111111111");
                             }
                         }
+                        System.out.println(arr_friend);
                         _user.setFriends(arr_friend);
                         userRepository.save(_user);
                     }
@@ -99,7 +101,7 @@ public class FriendController {
                     System.out.println("||||||||||||||||||||");
                     System.out.println(_friend);
                     System.out.println(_friend.getFriends());
-                    myLogger.myLog(_friend.getFriends(), "INFO");
+                    myLogger.myLog(_friend.getFriends().toString(), "INFO");
                     System.out.println("||||||||||||||||||||");
                     System.out.println("------------------");
                     System.out.println(friendsss_friends);
@@ -109,18 +111,19 @@ public class FriendController {
                     myLogger.myLog(friendsss_friends.getUserId(), "INFO");
                     if (friendsss_friends.getUserId().equals(userId)) {
                         System.out.println("+++========+++++");
-                        for (int i = 0; i < arr_friend_friend.size(); i++) {
+                        for (int i = 0; i <= arr_friend_friend.size(); i++) {
                             if (arr_friend_friend.get(i).getUserId().equals(userId)) {
                                 arr_friend_friend.get(i).setStatus("friend");
                                 myLogger.myLog(arr_friend_friend.get(i).setStatus("friend"), "INFO");
                                 System.out.println("22222222222222222222");
                             }
                         }
+                        System.out.println(arr_friend_friend);
                         _friend.setFriends(arr_friend_friend);
                         userRepository.save(_friend);
                     }
                 }
-                return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.OK);
 
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
