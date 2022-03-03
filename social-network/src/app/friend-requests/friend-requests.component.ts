@@ -19,7 +19,7 @@ export class FriendRequestsComponent implements OnInit {
     //http://localhost:3000/auth/users
     this.friends = (await axios({
       method: 'get',
-      url: `http://localhost:3000/auth/users`,
+      url: `http://localhost:3000/friend/request/${this.current_user._id}`,
     })).data;
   }
   async add(friend: any) {
@@ -38,8 +38,8 @@ export class FriendRequestsComponent implements OnInit {
 
     const result = (await axios({
       method: 'post',
-      url: `http://localhost:3000/friend/${friend._id}`,
-      data: { name: this.current_user.name, userId: this.current_user._id }
+      url: `http://localhost:3000/friend/requestAdd/${this.current_user._id}`,
+      data: { name: friend.name, userId: friend._id, status: "friend" }
     })).data;
 
   }

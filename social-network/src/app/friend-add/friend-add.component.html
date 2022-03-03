@@ -25,12 +25,11 @@
 
                     <img class="profile_img" src="../../assets/img_avatar.png" alt="">
                     <p class="profile_text">{{friend.name}}</p>
+                    <p *ngIf="friend.status=='friend'" class="profile_text">You already friend</p>
                     <button *ngIf="friend.status=='pending'" mat-flat-button>pending</button>
                     <button *ngIf="friend.status=='pending'" mat-flat-button (click)="cancelPending(friend)">✖</button>
                     <button *ngIf="friend.status=='notFriend'" mat-flat-button color="primary"
                         (click)="add(friend)">add+</button>
-                    <button *ngIf="friend.status=='notFriend'" mat-flat-button color="warn"
-                        (click)="delete(friend)">delete</button>
                 </div>
                 <mat-divider></mat-divider>
             </div>

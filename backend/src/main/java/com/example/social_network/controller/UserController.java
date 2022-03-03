@@ -68,6 +68,7 @@ public class UserController {
     public ResponseEntity < Users > cancelFriend(@PathVariable String userId,@PathVariable String friendId,@RequestParam(required = false) String title) {
         try {
             Optional < Users > userData = userRepository.findById(userId);
+            Optional < Users > friendData = userRepository.findById(friendId);
             System.out.printf(friendId);
             System.out.printf(userId);
 //            return new ResponseEntity<>(HttpStatus.OK);
@@ -84,7 +85,6 @@ public class UserController {
                         System.out.println(friendsss.getUserId());
                         System.out.println(friendId);
                         System.out.println(friendsss.getUserId()==friendId);
-                        ArrayList<Friend> arr_friend_arr;
                         for (int i=0;i<arr_friend.size();i++){
                             if (arr_friend.get(i).getUserId().equals(friendId)){
                                 arr_friend.get(i).setStatus("notFriend");
@@ -92,13 +92,39 @@ public class UserController {
                         }
                         System.out.println(arr_friend);
                         _user.setFriends(arr_friend);
+                        if (friendData.isPresent()) {
+                            System.out.println("===========================");
+                            System.out.println("===========START===========");
+                            Users _friend = friendData.get();
+
+                            ArrayList<Friend> arr_friend_friend =_friend.getFriends();
+                            for (Friend friendsss_friends:_friend.getFriends()) {
+                                System.out.println("======111111111========");
+                                if (friendsss_friends.getUserId().equals(userId)){
+                                    System.out.println("======22222========");
+                                    for (int i=0;i<arr_friend_friend.size();i++){
+                                        if (arr_friend_friend.get(i).getUserId().equals(userId)){
+                                            arr_friend_friend.get(i).setStatus("notFriend");
+                                        }
+                                    }
+                                    System.out.println(arr_friend_friend);
+                                    _friend.setFriends(arr_friend_friend);
+                                    userRepository.save(_friend);
 //                        _user.setFriends;
 //                        for (Friend templ_arr:arr_friend) {
 //                            if (templ_arr.getUserId().equals(friendId)){
 //
 //                            }
 //                        }
-                    }
+                                }
+                            }
+//                        _user.setFriends;
+//                        for (Friend templ_arr:arr_friend) {
+//                            if (templ_arr.getUserId().equals(friendId)){
+//
+//                            }
+//                        }
+                    }}
                 }
 //                for (int i=0;i<_user.getFriends().size();i++){
 //                    System.out.println(_user.getFriends());

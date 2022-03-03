@@ -14,10 +14,12 @@ export class FriendAddComponent implements OnInit {
     name: any
   ];
   current_user: any;
+  friends_count:any;
 
   constructor() { }
 
   async ngOnInit() {
+    this.friends_count=0;
     let arr: [
       name: any
     ];
@@ -63,11 +65,13 @@ export class FriendAddComponent implements OnInit {
               console.log('pending');
               this.friends_all[index].status = 'pending'
 
+
             }
           } else if (friends_list_arr_part.status == 'friend') {
             if (part._id == friends_list_arr_part.userId) {
               console.log('friend');
               this.friends_all[index].status = 'friend'
+              this.friends_count +=1;
 
             }
           }
@@ -99,8 +103,10 @@ export class FriendAddComponent implements OnInit {
 
     const result = (await axios({
       method: 'post',
-      url: `http://localhost:3000/friend/${friend._id}`,
-      data: { name: this.current_user.name, userId: this.current_user._id, status: "pending" }
+      url: `http://localhost:3000/friend/${this.current_user._id}`,
+      data: { name: friend.name, userId: friend._id, status: "pending" }
+      // url: `http://localhost:3000/friend/${friend._id}`,
+      // data: { name: this.current_user.name, userId: this.current_user._id, status: "pending" }
     })).data;
     this.friends.forEach((part: any, index: any) => {
       console.log(this.friends[index]);
