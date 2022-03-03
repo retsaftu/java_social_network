@@ -76,20 +76,21 @@ export class FeedComponent implements OnInit {
     // this.current_user
     console.log(com);
     this.posts
+    let comments_json = JSON.parse(JSON.stringify(com))
 
     // this.posts.push(com);
-    com.name = this.current_user.name;
-    com.userId = this.current_user._id;
+    comments_json.name = this.current_user.name;
+    comments_json.userId = this.current_user._id;
     for (let i = 0; i < this.posts.length; i++) {
       if (this.posts[i]._id == post._id) {
         console.log('==========');
-        this.posts[i].comments.push(com)
+        this.posts[i].comments.push(comments_json)
       }
     }
     const result = (await axios({
       method: 'post',
       url: `http://localhost:3000/api/posts/${post._id}`,
-      data: com
+      data: comments_json
     })).data;
     // post.comment = [{}]
 
