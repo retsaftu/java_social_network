@@ -19,19 +19,19 @@ public class Users {
     private String password;
     private ArrayList<Friend> friends;
 
-//    public Users(String name, String username, String email, String password) {
-//        this.name = name;
-//        this.username = username;
-//        this.email = email;
-//        this.password = password;
-//        this.friends = new ArrayList<>();
-//    }
+    // public Users(String name, String username, String email, String password) {
+    // this.name = name;
+    // this.username = username;
+    // this.email = email;
+    // this.password = password;
+    // this.friends = new ArrayList<>();
+    // }
     public Users(String name, String username, String email, String password, ArrayList<Friend> friends) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.friends=friends;
+        this.friends = friends;
     }
 
     public boolean addFriend(Friend friend) {

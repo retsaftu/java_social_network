@@ -12,16 +12,16 @@ public class MyLogger<T> {
     void myLog(String message, String type) throws IOException {
 
         ///////// КАК СОЗДАВАТЬ ИНСТАНС ЭТОГО ЛОГЕРА//////////////
-        //        ClassName=класс где ты находишься 
-        //        MyLogger<ClassName> myLogger = new MyLogger<>(ClassName.class);
-        //        myLogger.myLog("Tesgsfffft", "INFO");   или INFO
-        //        myLogger.myLog("Tesgsfffft", "ERROR");  или ERROR
-        
+        // ClassName=класс где ты находишься
+        // MyLogger<ClassName> myLogger = new MyLogger<>(ClassName.class);
+        // myLogger.myLog("Tesgsfffft", "INFO"); или INFO
+        // myLogger.myLog("Tesgsfffft", "ERROR"); или ERROR
+
         PatternLayout patternLayoutObj = new PatternLayout();
         String conversionPattern = "[%p] %d %M - %m%n";
         patternLayoutObj.setConversionPattern(conversionPattern);
 
-        RollingFileAppender rollingFileAppender= new RollingFileAppender(patternLayoutObj, "logs.log", true);
+        RollingFileAppender rollingFileAppender = new RollingFileAppender(patternLayoutObj, "logs.log", true);
 
         rollingFileAppender.setMaxFileSize("10MB");
         rollingFileAppender.setMaxBackupIndex(10);
@@ -36,8 +36,7 @@ public class MyLogger<T> {
         rootLoggerObj.setLevel(Level.ALL);
         rootLoggerObj.addAppender(rollingFileAppender);
 
-
-        if(type.equals("ERROR")){
+        if (type.equals("ERROR")) {
             rootLoggerObj.error(message);
         } else {
             rootLoggerObj.info(message);

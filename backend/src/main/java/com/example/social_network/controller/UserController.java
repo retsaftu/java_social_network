@@ -25,7 +25,6 @@ import java.util.Optional;
 
 public class UserController {
 
-
     @Autowired
     UserRepository userRepository;
     MongoOperations mongoOperations = new MongoTemplate(MongoClients.create(), "social_network");
@@ -33,9 +32,9 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<Users>> getUsers(@RequestParam(required = false) String title) {
         try {
-            List < Users > users = new ArrayList<Users>();
+            List<Users> users = new ArrayList<Users>();
 
-            userRepository.findAll().forEach(users:: add);
+            userRepository.findAll().forEach(users::add);
             System.out.println(users);
             if (users.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -46,10 +45,12 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("/users/{userId}")
-    public ResponseEntity < Users > getUsersById(@PathVariable String userId,@RequestParam(required = false) String title) {
+    public ResponseEntity<Users> getUsersById(@PathVariable String userId,
+            @RequestParam(required = false) String title) {
         try {
-            List < Users > users = new ArrayList<Users>();
+            List<Users> users = new ArrayList<Users>();
             System.out.println(userId);
 
             Users user = userRepository.findById(userId).orElse(null);
@@ -64,29 +65,31 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("/users/{userId}/{friendId}")
-    public ResponseEntity < Users > cancelFriend(@PathVariable String userId,@PathVariable String friendId,@RequestParam(required = false) String title) {
+    public ResponseEntity<Users> cancelFriend(@PathVariable String userId, @PathVariable String friendId,
+            @RequestParam(required = false) String title) {
         try {
-            Optional < Users > userData = userRepository.findById(userId);
-            Optional < Users > friendData = userRepository.findById(friendId);
+            Optional<Users> userData = userRepository.findById(userId);
+            Optional<Users> friendData = userRepository.findById(friendId);
             System.out.printf(friendId);
             System.out.printf(userId);
-//            return new ResponseEntity<>(HttpStatus.OK);
+            // return new ResponseEntity<>(HttpStatus.OK);
             if (userData.isPresent()) {
                 Users _user = userData.get();
 
-                ArrayList<Friend> arr_friend =_user.getFriends();
-                for (Friend friendsss:_user.getFriends()) {
-//                    System.out.println(friendsss);
-//                    System.out.println(friendsss.setStatus("notFriend"));
+                ArrayList<Friend> arr_friend = _user.getFriends();
+                for (Friend friendsss : _user.getFriends()) {
+                    // System.out.println(friendsss);
+                    // System.out.println(friendsss.setStatus("notFriend"));
 
-                    if (friendsss.getUserId().equals(friendId)){
+                    if (friendsss.getUserId().equals(friendId)) {
                         System.out.println("RABOTAET");
                         System.out.println(friendsss.getUserId());
                         System.out.println(friendId);
-                        System.out.println(friendsss.getUserId()==friendId);
-                        for (int i=0;i<arr_friend.size();i++){
-                            if (arr_friend.get(i).getUserId().equals(friendId)){
+                        System.out.println(friendsss.getUserId() == friendId);
+                        for (int i = 0; i < arr_friend.size(); i++) {
+                            if (arr_friend.get(i).getUserId().equals(friendId)) {
                                 arr_friend.get(i).setStatus("notFriend");
                             }
                         }
@@ -97,96 +100,100 @@ public class UserController {
                             System.out.println("===========START===========");
                             Users _friend = friendData.get();
 
-                            ArrayList<Friend> arr_friend_friend =_friend.getFriends();
-                            for (Friend friendsss_friends:_friend.getFriends()) {
+                            ArrayList<Friend> arr_friend_friend = _friend.getFriends();
+                            for (Friend friendsss_friends : _friend.getFriends()) {
                                 System.out.println("======111111111========");
-                                if (friendsss_friends.getUserId().equals(userId)){
+                                if (friendsss_friends.getUserId().equals(userId)) {
                                     System.out.println("======22222========");
-                                    for (int i=0;i<arr_friend_friend.size();i++){
-                                        if (arr_friend_friend.get(i).getUserId().equals(userId)){
+                                    for (int i = 0; i < arr_friend_friend.size(); i++) {
+                                        if (arr_friend_friend.get(i).getUserId().equals(userId)) {
                                             arr_friend_friend.get(i).setStatus("notFriend");
                                         }
                                     }
                                     System.out.println(arr_friend_friend);
                                     _friend.setFriends(arr_friend_friend);
                                     userRepository.save(_friend);
-//                        _user.setFriends;
-//                        for (Friend templ_arr:arr_friend) {
-//                            if (templ_arr.getUserId().equals(friendId)){
-//
-//                            }
-//                        }
+                                    // _user.setFriends;
+                                    // for (Friend templ_arr:arr_friend) {
+                                    // if (templ_arr.getUserId().equals(friendId)){
+                                    //
+                                    // }
+                                    // }
                                 }
                             }
-//                        _user.setFriends;
-//                        for (Friend templ_arr:arr_friend) {
-//                            if (templ_arr.getUserId().equals(friendId)){
-//
-//                            }
-//                        }
-                    }}
+                            // _user.setFriends;
+                            // for (Friend templ_arr:arr_friend) {
+                            // if (templ_arr.getUserId().equals(friendId)){
+                            //
+                            // }
+                            // }
+                        }
+                    }
                 }
-//                for (int i=0;i<_user.getFriends().size();i++){
-//                    System.out.println(_user.getFriends());
-//                }
-//                System.out.println(_user.getFriends());
-                //            _user.getFriends();
-                //            _user.setFriends(friendId);
+                // for (int i=0;i<_user.getFriends().size();i++){
+                // System.out.println(_user.getFriends());
+                // }
+                // System.out.println(_user.getFriends());
+                // _user.getFriends();
+                // _user.setFriends(friendId);
                 return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            //            List<Users> users = new ArrayList<Users>();
+            // List<Users> users = new ArrayList<Users>();
             //
-            //            Users user=userRepository.findById(userId).orElse(null);
-            //            System.out.println(users);
-            //            System.out.println(userId);
-            //            System.out.println(friendId);
-            //            if (user==null) {
-            //                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            //            }
+            // Users user=userRepository.findById(userId).orElse(null);
+            // System.out.println(users);
+            // System.out.println(userId);
+            // System.out.println(friendId);
+            // if (user==null) {
+            // return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            // }
             //
-            //            return new ResponseEntity<>(user, HttpStatus.OK);
+            // return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping("/register")
-    public ResponseEntity < Users > createUser(@RequestBody Users user) {
+    public ResponseEntity<Users> createUser(@RequestBody Users user) {
 
         try {
             System.out.println("register");
-            //             Users check = mongoOperations.findOne(
-            //                    Query.query(Criteria.where("email").is(user.getEmail())),
-            //                    Users.class,
-            //                    "users"
-            //            );
-            //            System.out.println(check.getEmail());
-            //            System.out.println(user.getEmail());
+            // Users check = mongoOperations.findOne(
+            // Query.query(Criteria.where("email").is(user.getEmail())),
+            // Users.class,
+            // "users"
+            // );
+            // System.out.println(check.getEmail());
+            // System.out.println(user.getEmail());
             //
-            //            if (check.getEmail().equals(user.getEmail())) {
-            //                check=null;
-            //                return new ResponseEntity<>(check,HttpStatus.BAD_REQUEST);
-            //            }
+            // if (check.getEmail().equals(user.getEmail())) {
+            // check=null;
+            // return new ResponseEntity<>(check,HttpStatus.BAD_REQUEST);
+            // }
             user.setPassword(Token.getToken(user.getPassword()));
-            Users _user = userRepository.save(new Users(user.getName(), user.getUsername(), user.getEmail(), user.getPassword(), user.getFriends()));
+            Users _user = userRepository.save(new Users(user.getName(), user.getUsername(), user.getEmail(),
+                    user.getPassword(), user.getFriends()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping("/login")
-    public ResponseEntity < Users > login(@RequestBody Users user) {
+    public ResponseEntity<Users> login(@RequestBody Users user) {
 
         try {
-            //            MongoOperations mongoOperations = new MongoTemplate(MongoClients.create(), "social_network");
+            // MongoOperations mongoOperations = new MongoTemplate(MongoClients.create(),
+            // "social_network");
             user.setPassword(Token.getToken(user.getPassword()));
             Users _users = mongoOperations.findOne(
                     Query.query(Criteria.where("email").is(user.getEmail()).where("password").is(user.getPassword())),
                     Users.class,
-                    "users"
-            );
+                    "users");
             System.out.println("=====================");
             System.out.println(_users);
             return new ResponseEntity<>(_users, HttpStatus.CREATED);

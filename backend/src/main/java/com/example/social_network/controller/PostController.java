@@ -43,11 +43,13 @@ public class PostController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping("/posts")
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         try {
             Post _post = postRepository
-                    .save(new Post(post.getName(),post.getUsername(),post.getUserId(), post.getDescription(), post.getLike(), post.getVisible(), post.getComments()));
+                    .save(new Post(post.getName(), post.getUsername(), post.getUserId(), post.getDescription(),
+                            post.getLike(), post.getVisible(), post.getComments()));
             return new ResponseEntity<>(_post, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -69,19 +71,18 @@ public class PostController {
         }
     }
 
-
-
     //
-//    @GetMapping("/contests/{id}/tasks")
-//    public ResponseEntity<Contest> getContestById(@PathVariable("id") String id) {
-//        Optional<Contest> contestData = contestRepository.findById(id);
-//
-//        if (contestData.isPresent()) {
-//            return new ResponseEntity<>(contestData.get(), HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
+    // @GetMapping("/contests/{id}/tasks")
+    // public ResponseEntity<Contest> getContestById(@PathVariable("id") String id)
+    // {
+    // Optional<Contest> contestData = contestRepository.findById(id);
+    //
+    // if (contestData.isPresent()) {
+    // return new ResponseEntity<>(contestData.get(), HttpStatus.OK);
+    // } else {
+    // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    // }
+    // }
 
     // @GetMapping("/contests/{id}/tasks")
     // public ResponseEntity<Contest> getContestById(@PathVariable("id") String id)

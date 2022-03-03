@@ -1,6 +1,5 @@
 package com.example.social_network.controller;
 
-
 import com.example.social_network.models.Friend;
 import com.example.social_network.models.Users;
 import com.example.social_network.repository.UserRepository;
@@ -25,15 +24,15 @@ public class FriendController {
         try {
             Users user1 = userRepository.findById(userId).orElse(null);
 
-            List< Users > users = new ArrayList<Users>();
+            List<Users> users = new ArrayList<Users>();
 
-            List< Users > usersRequest = new ArrayList<Users>();
+            List<Users> usersRequest = new ArrayList<Users>();
 
-            userRepository.findAll().forEach(users:: add);
-            for (Users eachUser:users) {
-                for (Friend eachFriend:eachUser.getFriends()) {
-                    if (eachFriend.getUserId().equals(user1.get_id())){
-                        if (eachFriend.getStatus().equals("pending")){
+            userRepository.findAll().forEach(users::add);
+            for (Users eachUser : users) {
+                for (Friend eachFriend : eachUser.getFriends()) {
+                    if (eachFriend.getUserId().equals(user1.get_id())) {
+                        if (eachFriend.getStatus().equals("pending")) {
                             usersRequest.add(eachUser);
                         }
                     }
@@ -45,6 +44,7 @@ public class FriendController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PostMapping("/requestAdd/{userId}")
     public ResponseEntity<Users> addFriendRequest(@PathVariable String userId, @RequestBody Friend friend) {
         try {
@@ -53,28 +53,27 @@ public class FriendController {
             System.out.println("+++++++++++++++++++");
             System.out.println(friend);
             System.out.println("+++++++++++++++++++");
-//            Users user1 = userRepository.findById(userId).orElse(null);
-//            Users user2 = userRepository.findById(friend.getUserId()).orElse(null);
-            Optional < Users > userData = userRepository.findById(userId);
-            Optional < Users > friendData = userRepository.findById(friend.getUserId());
+            // Users user1 = userRepository.findById(userId).orElse(null);
+            // Users user2 = userRepository.findById(friend.getUserId()).orElse(null);
+            Optional<Users> userData = userRepository.findById(userId);
+            Optional<Users> friendData = userRepository.findById(friend.getUserId());
 
-            if (userData.isPresent()&&friendData.isPresent()) {
+            if (userData.isPresent() && friendData.isPresent()) {
                 Users _user = userData.get();
                 Users _friend = friendData.get();
 
-
-                ArrayList<Friend> arr_friend =_user.getFriends();
-                ArrayList<Friend> arr_friend_friend =_friend.getFriends();
+                ArrayList<Friend> arr_friend = _user.getFriends();
+                ArrayList<Friend> arr_friend_friend = _friend.getFriends();
                 System.out.println("arr_friend");
                 System.out.println(arr_friend);
                 System.out.println("arr_friend_friend");
                 System.out.println(arr_friend_friend);
-                for (Friend friendsss:_user.getFriends()) {
+                for (Friend friendsss : _user.getFriends()) {
                     if (friendsss.getUserId().equals(friend.getUserId())) {
                         System.out.println("RABOTAET");
                         System.out.println(friendsss.getUserId());
-//                        Syste.out.println(friendId);
-//                        System.out.println(friendsss.getUserId() == friendId);
+                        // Syste.out.println(friendId);
+                        // System.out.println(friendsss.getUserId() == friendId);
                         for (int i = 0; i < arr_friend.size(); i++) {
                             if (arr_friend.get(i).getUserId().equals(friend.getUserId())) {
                                 arr_friend.get(i).setStatus("friend");
@@ -86,7 +85,7 @@ public class FriendController {
                     }
                 }
                 System.out.println(userId);
-                for (Friend friendsss_friends:_friend.getFriends()) {
+                for (Friend friendsss_friends : _friend.getFriends()) {
                     System.out.println("||||||||||||||||||||");
                     System.out.println(_friend);
                     System.out.println(_friend.getFriends());
@@ -96,10 +95,10 @@ public class FriendController {
                     System.out.println("------------------");
                     System.out.println("friendsss_friends.getUserId()");
                     System.out.println(friendsss_friends.getUserId());
-                    if (friendsss_friends.getUserId().equals(userId)){
+                    if (friendsss_friends.getUserId().equals(userId)) {
                         System.out.println("+++========+++++");
-                        for (int i=0;i<arr_friend_friend.size();i++){
-                            if (arr_friend_friend.get(i).getUserId().equals(userId)){
+                        for (int i = 0; i < arr_friend_friend.size(); i++) {
+                            if (arr_friend_friend.get(i).getUserId().equals(userId)) {
                                 arr_friend_friend.get(i).setStatus("friend");
                                 System.out.println("22222222222222222222");
                             }
@@ -110,31 +109,25 @@ public class FriendController {
                 }
                 return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
 
-            }else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-//
-//            return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
+            //
+            // return new ResponseEntity<>(userRepository.save(_user), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
-
-
-
-
-
     @PostMapping("/{userId}")
     public ResponseEntity<Users> addFriend(@PathVariable String userId, @RequestBody Friend friend) {
         try {
             Users user1 = userRepository.findById(userId).orElse(null);
             Users user2 = userRepository.findById(friend.getUserId()).orElse(null);
-            Optional< Users > userData = userRepository.findById(userId);
-            boolean check=false;
+            Optional<Users> userData = userRepository.findById(userId);
+            boolean check = false;
             System.out.println("===========================");
             System.out.println("===========START===========");
             System.out.println(user1);
@@ -145,33 +138,33 @@ public class FriendController {
                 Users _user = userData.get();
                 System.out.println("======111111111========");
 
-                ArrayList<Friend> arr_friend =_user.getFriends();
-                for (Friend friendsss:_user.getFriends()) {
+                ArrayList<Friend> arr_friend = _user.getFriends();
+                for (Friend friendsss : _user.getFriends()) {
                     System.out.println("======22222========");
-//                    System.out.println(friendsss);
-//                    System.out.println(friendsss.setStatus("notFriend"));
+                    // System.out.println(friendsss);
+                    // System.out.println(friendsss.setStatus("notFriend"));
                     System.out.println(user2);
-                    if (friendsss.getUserId().equals(user2.get_id())){
+                    if (friendsss.getUserId().equals(user2.get_id())) {
 
                         System.out.println(friendsss.getUserId());
                         System.out.println(user2);
                         ArrayList<Friend> arr_friend_arr;
-                        for (int i=0;i<arr_friend.size();i++){
-                            if (arr_friend.get(i).getUserId().equals(user2.get_id())){
+                        for (int i = 0; i < arr_friend.size(); i++) {
+                            if (arr_friend.get(i).getUserId().equals(user2.get_id())) {
                                 System.out.println("RABOTAET");
                                 arr_friend.get(i).setStatus("pending");
-                                check=true;
+                                check = true;
                                 System.out.println(check);
                             }
                         }
                         System.out.println(arr_friend);
                         _user.setFriends(arr_friend);
-//                        _user.setFriends;
-//                        for (Friend templ_arr:arr_friend) {
-//                            if (templ_arr.getUserId().equals(friendId)){
-//
-//                            }
-//                        }
+                        // _user.setFriends;
+                        // for (Friend templ_arr:arr_friend) {
+                        // if (templ_arr.getUserId().equals(friendId)){
+                        //
+                        // }
+                        // }
                     }
                 }
                 System.out.println(check);
@@ -182,12 +175,12 @@ public class FriendController {
             System.out.println("===========================");
             System.out.println(check);
 
-            if (user1 != null && user2 != null&&!check) {
+            if (user1 != null && user2 != null && !check) {
                 user1.addFriend(friend);
                 userRepository.save(user1);
-//                Friend friend1 = new Friend(user1.getName(), user1.get_id(),"pending");
-//                user2.addFriend(friend1);
-//                userRepository.save(user2);
+                // Friend friend1 = new Friend(user1.getName(), user1.get_id(),"pending");
+                // user2.addFriend(friend1);
+                // userRepository.save(user2);
             }
             return new ResponseEntity<>(user1, HttpStatus.OK);
         } catch (Exception e) {
