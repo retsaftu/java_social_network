@@ -15,6 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/friend")
 public class FriendController {
+    MyLogger<FriendController> myLogger = new MyLogger<>(FriendController.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -27,6 +28,7 @@ public class FriendController {
             List<Users> users = new ArrayList<Users>();
 
             List<Users> usersRequest = new ArrayList<Users>();
+            myLogger.myLog(usersRequest, "INFO");
 
             userRepository.findAll().forEach(users::add);
             for (Users eachUser : users) {
@@ -57,6 +59,8 @@ public class FriendController {
             // Users user2 = userRepository.findById(friend.getUserId()).orElse(null);
             Optional<Users> userData = userRepository.findById(userId);
             Optional<Users> friendData = userRepository.findById(friend.getUserId());
+            myLogger.myLog(userData, "INFO");
+            myLogger.myLog(friendData, "INFO");
 
             if (userData.isPresent() && friendData.isPresent()) {
                 Users _user = userData.get();
@@ -66,12 +70,18 @@ public class FriendController {
                 ArrayList<Friend> arr_friend_friend = _friend.getFriends();
                 System.out.println("arr_friend");
                 System.out.println(arr_friend);
+                myLogger.myLog(arr_friend, "INFO");
+                myLogger.myLog(arr_friend_friend, "INFO");
+
                 System.out.println("arr_friend_friend");
+
                 System.out.println(arr_friend_friend);
                 for (Friend friendsss : _user.getFriends()) {
                     if (friendsss.getUserId().equals(friend.getUserId())) {
                         System.out.println("RABOTAET");
                         System.out.println(friendsss.getUserId());
+                        myLogger.myLog(friendsss.getUserId(), "INFO");
+
                         // Syste.out.println(friendId);
                         // System.out.println(friendsss.getUserId() == friendId);
                         for (int i = 0; i < arr_friend.size(); i++) {
@@ -89,17 +99,20 @@ public class FriendController {
                     System.out.println("||||||||||||||||||||");
                     System.out.println(_friend);
                     System.out.println(_friend.getFriends());
+                    myLogger.myLog(_friend.getFriends(), "INFO");
                     System.out.println("||||||||||||||||||||");
                     System.out.println("------------------");
                     System.out.println(friendsss_friends);
                     System.out.println("------------------");
                     System.out.println("friendsss_friends.getUserId()");
                     System.out.println(friendsss_friends.getUserId());
+                    myLogger.myLog(friendsss_friends.getUserId(), "INFO");
                     if (friendsss_friends.getUserId().equals(userId)) {
                         System.out.println("+++========+++++");
                         for (int i = 0; i < arr_friend_friend.size(); i++) {
                             if (arr_friend_friend.get(i).getUserId().equals(userId)) {
                                 arr_friend_friend.get(i).setStatus("friend");
+                                myLogger.myLog(arr_friend_friend.get(i).setStatus("friend"), "INFO");
                                 System.out.println("22222222222222222222");
                             }
                         }

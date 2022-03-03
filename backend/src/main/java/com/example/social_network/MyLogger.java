@@ -13,8 +13,8 @@ public class MyLogger<T> {
 
         ///////// КАК СОЗДАВАТЬ ИНСТАНС ЭТОГО ЛОГЕРА//////////////
         // ClassName=класс где ты находишься
-        // MyLogger<ClassName> myLogger = new MyLogger<>(ClassName.class);
-        // myLogger.myLog("Tesgsfffft", "INFO"); или INFO
+//         MyLogger<ClassName> myLogger = new MyLogger<>(ClassName.class);
+//         myLogger.myLog("Tesgsfffft", "INFO"); или INFO
         // myLogger.myLog("Tesgsfffft", "ERROR"); или ERROR
 
         PatternLayout patternLayoutObj = new PatternLayout();

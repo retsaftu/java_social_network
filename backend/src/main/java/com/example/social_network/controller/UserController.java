@@ -24,6 +24,7 @@ import java.util.Optional;
 @RequestMapping("/auth")
 
 public class UserController {
+    MyLogger<UserController> myLogger = new MyLogger<>(UserController.class);
 
     @Autowired
     UserRepository userRepository;
@@ -36,12 +37,15 @@ public class UserController {
 
             userRepository.findAll().forEach(users::add);
             System.out.println(users);
+            myLogger.myLog(users, "INFO");
+
             if (users.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
+            myLogger.myLog(e, "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -52,6 +56,7 @@ public class UserController {
         try {
             List<Users> users = new ArrayList<Users>();
             System.out.println(userId);
+            myLogger.myLog(userId, "INFO");
 
             Users user = userRepository.findById(userId).orElse(null);
             System.out.println(users);
@@ -62,6 +67,7 @@ public class UserController {
 
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
+            myLogger.myLog(e, "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -74,6 +80,9 @@ public class UserController {
             Optional<Users> friendData = userRepository.findById(friendId);
             System.out.printf(friendId);
             System.out.printf(userId);
+            myLogger.myLog(userId, "INFO");
+            myLogger.myLog(friendId, "INFO");
+
             // return new ResponseEntity<>(HttpStatus.OK);
             if (userData.isPresent()) {
                 Users _user = userData.get();
@@ -87,6 +96,8 @@ public class UserController {
                         System.out.println("RABOTAET");
                         System.out.println(friendsss.getUserId());
                         System.out.println(friendId);
+                        myLogger.myLog(friendsss.getUserId(), "INFO");
+
                         System.out.println(friendsss.getUserId() == friendId);
                         for (int i = 0; i < arr_friend.size(); i++) {
                             if (arr_friend.get(i).getUserId().equals(friendId)) {
@@ -111,6 +122,8 @@ public class UserController {
                                         }
                                     }
                                     System.out.println(arr_friend_friend);
+                                    myLogger.myLog(arr_friend_friend, "INFO");
+
                                     _friend.setFriends(arr_friend_friend);
                                     userRepository.save(_friend);
                                     // _user.setFriends;
@@ -153,6 +166,7 @@ public class UserController {
             //
             // return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
+            myLogger.myLog(e, "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -179,6 +193,7 @@ public class UserController {
                     user.getPassword(), user.getFriends()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
+            myLogger.myLog(e, "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -196,8 +211,11 @@ public class UserController {
                     "users");
             System.out.println("=====================");
             System.out.println(_users);
+            myLogger.myLog(_users, "INFO");
+
             return new ResponseEntity<>(_users, HttpStatus.CREATED);
         } catch (Exception e) {
+            myLogger.myLog(e, "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

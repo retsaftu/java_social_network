@@ -19,6 +19,7 @@ import java.util.Optional;
 // @CrossOrigin(origins = "*", allowedHeaders = "*")
 
 public class PostController {
+    MyLogger<PostController> myLogger = new MyLogger<>(PostController.class);
 
     @Autowired
     PostRepository postRepository;
@@ -34,12 +35,14 @@ public class PostController {
             // else
             // contestRepository.findByTitleContaining(title).forEach(contests::add);
             System.out.println(posts);
+            myLogger.myLog(PostController, "INFO");
             if (posts.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             return new ResponseEntity<>(posts, HttpStatus.OK);
         } catch (Exception e) {
+            myLogger.myLog(e, "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -52,6 +55,7 @@ public class PostController {
                             post.getLike(), post.getVisible(), post.getComments()));
             return new ResponseEntity<>(_post, HttpStatus.CREATED);
         } catch (Exception e) {
+            myLogger.myLog(e, "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,6 +71,7 @@ public class PostController {
             }
             return new ResponseEntity<>(post, HttpStatus.OK);
         } catch (Exception e) {
+            myLogger.myLog(e, "ERROR");
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
